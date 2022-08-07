@@ -1,5 +1,4 @@
 const bcrypt = require('bcrypt-nodejs')
-const { use } = require('passport')
 
 module.exports = app => {
     const { existsOrError, notExistsOrError, equalsOrError } = app.api.validation
@@ -13,7 +12,7 @@ module.exports = app => {
         const user = { ...req.body }
         if(req.params.id) user.id = req.params.id
 
-        if(!req.originsUrl.startsWith('/users')) user.admin = false
+        if(!req.originalUrl.startsWith('/users')) user.admin = false
         if(!req.user || !req.user.admin) user.admin = false
 
         try{
