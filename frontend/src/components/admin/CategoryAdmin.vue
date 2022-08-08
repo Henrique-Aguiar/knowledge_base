@@ -10,6 +10,15 @@
                         :readonly="mode === 'remove'"
                         placeholder="Informe o Nome da Categoria..." />
                 </b-form-group>
+                <b-form-group label="Categoria Pai:" label-for="category-parentId">
+                <b-form-select v-if="mode === 'save'"
+                    id="category-parentId"
+                    :options="categories" v-model="category.parentId" />
+                <b-form-input v-else
+                    id="category-parentId" type="text"
+                    v-model="category.path"
+                    readonly />
+            </b-form-group>
             </b-col>
         </b-row>
         <b-row>
@@ -24,15 +33,15 @@
     </b-form>
     <hr>
     <b-table hover striped :items="categories" :fields="fields">
-        <template slot="actions" slot-scope="data">
-            <b-button variant="warning" @click="loadCategory(data.category)" class="mr-2">
-                <i class="fa fa-pencil"></i>
-            </b-button>
-            <b-button variant="danger" @click="loadCategory(data.category, 'remove')">
-                <i class="fa fa-trash"></i>
-            </b-button>
-        </template>
-    </b-table>
+            <template slot="actions" slot-scope="data">
+                <b-button variant="warning" @click="loadCategory(data.item)" class="mr-2">
+                    <i class="fa fa-pencil"></i>
+                </b-button>
+                <b-button variant="danger" @click="loadCategory(data.item, 'remove')">
+                    <i class="fa fa-trash"></i>
+                </b-button>
+            </template>
+        </b-table>
   </div>
 </template>
 
@@ -59,7 +68,10 @@ export default {
         loadCategories() {
             const url = `${baseApiUrl}/categories`
             axios.get(url).then(res => {
-                this.categories = res.data
+                //this.categories = res.data
+                this.categories = res.data.map(category => {
+                    return { ...category, value: category.id, text:category.path }
+                })
             })
         },
         reset() {
