@@ -1,5 +1,5 @@
-import Vue from "vue";
-import Toasted from "vue-toasted"
+import Vue from 'vue'
+import Toasted from 'vue-toasted'
 
 Vue.use(Toasted, {
     iconPack: 'fontawesome',
@@ -15,6 +15,5 @@ Vue.toasted.register(
 Vue.toasted.register(
     'defaultError',
     payload => !payload.msg ? 'Oops.. Erro inesperado.' : payload.msg,
-    { type: 'error', icon : 'times' }
+    { type : 'error', icon : 'times' }
 )
-
