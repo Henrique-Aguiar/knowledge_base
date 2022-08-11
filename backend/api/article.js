@@ -1,4 +1,3 @@
-const { get } = require('mongoose')
 const queries = require('./queries')
 
 module.exports = app => {
@@ -10,11 +9,11 @@ module.exports = app => {
 
         try {
             existsOrError(article.name, 'Nome não informado')
-            existsOrError(article.description, 'Descrição não informado')
+            existsOrError(article.description, 'Descrição não informada')
             existsOrError(article.categoryId, 'Categoria não informada')
             existsOrError(article.userId, 'Autor não informado')
-            existsOrError(article.content, 'conteúdo não informado')
-        } catch (msg) {
+            existsOrError(article.content, 'Conteúdo não informado')
+        } catch(msg) {
             res.status(400).send(msg)
         }
 
@@ -34,21 +33,22 @@ module.exports = app => {
 
     const remove = async (req, res) => {
         try {
-            const rowDeleted = await app.db('articles')
+            const rowsDeleted = await app.db('articles')
                 .where({ id: req.params.id }).del()
             
-            try{
-                existsOrError(rowDeleted, 'Artido não foi encontrado.')
+            try {
+                existsOrError(rowsDeleted, 'Artigo não foi encontrado.')
             } catch(msg) {
-                return res.status(400).send(msg)
+                return res.status(400).send(msg)    
             }
+
             res.status(204).send()
-        } catch (msg) {
+        } catch(msg) {
             res.status(500).send(msg)
         }
     }
 
-    const limit = 10 // usado para paginação 
+    const limit = 10 // usado para paginação
     const get = async (req, res) => {
         const page = req.query.page || 1
 
@@ -58,7 +58,7 @@ module.exports = app => {
         app.db('articles')
             .select('id', 'name', 'description')
             .limit(limit).offset(page * limit - limit)
-            .then(article => res.json({ data: article, count, limit }))
+            .then(articles => res.json({ data: articles, count, limit }))
             .catch(err => res.status(500).send(err))
     }
 

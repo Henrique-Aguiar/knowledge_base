@@ -7,11 +7,12 @@ module.exports = app => {
             name: req.body.name,
             parentId: req.body.parentId
         }
+        
         if(req.params.id) category.id = req.params.id
 
         try {
             existsOrError(category.name, 'Nome não informado')
-        } catch (msg) {
+        } catch(msg) {
             return res.status(400).send(msg)
         }
 
@@ -31,22 +32,22 @@ module.exports = app => {
 
     const remove = async (req, res) => {
         try {
-            existsOrError(req.params.id, 'Código da categoria não informado.')
+            existsOrError(req.params.id, 'Código da Categoria não informado.')
 
             const subcategory = await app.db('categories')
                 .where({ parentId: req.params.id })
-            notExistsOrError(subcategory, 'Categoria possui sub categorias.')
+            notExistsOrError(subcategory, 'Categoria possui subcategorias.')
 
             const articles = await app.db('articles')
                 .where({ categoryId: req.params.id })
             notExistsOrError(articles, 'Categoria possui artigos.')
 
-            const rowDeleted = await app.db('categories')
+            const rowsDeleted = await app.db('categories')
                 .where({ id: req.params.id }).del()
-            existsOrError(rowDeleted, 'Categoria não foi encontrada.')
+            existsOrError(rowsDeleted, 'Categoria não foi encontrada.')
 
             res.status(204).send()
-        } catch (msg) {
+        } catch(msg) {
             res.status(400).send(msg)
         }
     }
@@ -66,7 +67,7 @@ module.exports = app => {
                 parent = getParent(categories, parent.parentId)
             }
 
-            return { ...category, path } 
+            return { ...category, path }
         })
 
         categoriesWithPath.sort((a, b) => {
@@ -80,13 +81,14 @@ module.exports = app => {
 
     const get = (req, res) => {
         app.db('categories')
-        .then(categories => res.json(withPath(categories)))
-        .catch(err => res.status(500).send(err))
+            .then(categories => res.json(withPath(categories)))
+            .catch(err => res.status(500).send(err))
     }
 
     const getById = (req, res) => {
         app.db('categories')
             .where({ id: req.params.id })
+            .first()
             .then(category => res.json(category))
             .catch(err => res.status(500).send(err))
     }
