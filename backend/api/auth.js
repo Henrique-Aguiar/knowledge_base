@@ -1,7 +1,6 @@
 const { authSecret } = require('../.env')
 const jwt = require('jwt-simple')
 const bcrypt = require('bcrypt-nodejs')
-const { use } = require('passport')
 
 
 module.exports = app => {
