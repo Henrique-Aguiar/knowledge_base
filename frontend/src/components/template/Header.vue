@@ -1,18 +1,18 @@
 <template>
-  <header class="header">
-    <a class="toggle" @click="toggleMenu" v-if="!hideToggle">
-        <i class="fa fa-lg" :class="icon"></i>
-    </a>
-    <h1 class="title">
-        <router-link to="/">{{ title }}</router-link>
-    </h1>
-    <UserDropdown v-if="!hideUserDropdown" />
-  </header>
+    <header class="header">
+        <a class="toggle" @click="toggleMenu" v-if="!hideToggle">
+            <i class="fa fa-lg" :class="icon"></i>
+        </a>
+        <h1 class="title">
+            <router-link to="/">{{ title }}</router-link>
+        </h1>
+        <UserDropdown v-if="!hideUserDropdown" />
+    </header>
 </template>
 
 <script>
+import UserDropdown from './UserDropdown'
 
-import UserDropdown from './UserDropdown.vue'
 export default {
     name: 'Header',
     components: { UserDropdown },
@@ -28,7 +28,7 @@ export default {
     },
     methods: {
         toggleMenu() {
-           this.$store.commit('toggleMenu')
+            this.$store.commit('toggleMenu')
         }
     }
 }
@@ -45,7 +45,7 @@ export default {
     }
 
     .title {
-        font-size: 1.2rem;    
+        font-size: 1.2rem;
         color: #fff;
         font-weight: 100;
         flex-grow: 1;
@@ -53,19 +53,19 @@ export default {
     }
 
     .title a {
-        color: #fff;
+        color: #FFF;
         text-decoration: none;
     }
 
-     .title a:hover {
-        color: #fff;
+    .title a:hover {
+        color: #FFF;
         text-decoration: none;
     }
 
     header.header > a.toggle {
         width: 60px;
         height: 100%;
-        color:#fff;
+        color: #fff;
         justify-self: flex-start;
         text-decoration: none;
 
@@ -75,6 +75,7 @@ export default {
     }
 
     header.header > a.toggle:hover {
-        background-color: rgba(0,0,0,0.2);
+        color: #fff;
+        background-color: rgba(0, 0, 0, 0.2);
     }
 </style>
